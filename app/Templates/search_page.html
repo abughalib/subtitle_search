@@ -1,0 +1,22 @@
+{% extends 'home.html' %} {% block content %}
+<div>
+  <table>
+    <thead>
+      <tr>
+        <th>File Name</th>
+        <th>Time</th>
+        <th>Subtitle</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for file in data %}
+      <tr>
+        <td>{{ file.file_name }}</td>
+        <td>{{ file.video_time }}</td>
+        <td>{{ file.subtitle_line }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %} ```
