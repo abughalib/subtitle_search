@@ -32,7 +32,12 @@ def write_file(file) -> (str, Path):
 
 def extract_subtitle(file_location: Path, file_name: str):
     subtitle_path = setting.MEDIA_DIR.joinpath(file_name + '.srt')
-    os.system(f'ccextractor {file_location}/{file_name}.mp4 -o {subtitle_path}')
+    # For windows
+    if os.name == 'nt':
+        cc_extractor_path = 'C:\\"Program Files (x86)"\\CCExtractor\\ccextractorwinfull.exe'
+        os.system(f'{cc_extractor_path} {file_location}/{file_name}.mp4 -o {subtitle_path}')
+    else:
+        os.system(f'/home/ubuntu/ccextractor/linux/ccextractor {file_location}/{file_name}.mp4 -o {subtitle_path}')
 
     return subtitle_path
 
@@ -80,16 +85,27 @@ def upload_video(file):
 
 
 def upload_subtitle(subtitle_json_location: Path):
+    # Remove the previous index
+    remove_index()
     # Save subtitle to DynamoDB
     # Upload it to meilisearch
     client = meilisearch.Client('http://localhost:7700')
     json_file = open(subtitle_json_location, encoding='utf-8')
     subtitles = json.load(json_file)
-    client.index('subtitles').add_documents(subtitles)
-
+    try:
+        client.index('subtitles').add_documents(subtitles)
+    except meilisearch.errors.MeilisearchApiError:
+        print('Error uploading to meilisearch')
 
 def search_text(phrase: str) -> dict[str, Any]:
     client = meilisearch.Client('http://localhost:7700')
-    res = client.index('subtitles').search(phrase)
-
+    try:
+        res = client.index('subtitles').search(phrase)
+    except meilisearch.errors.MeilisearchApiError:
+        print('Error searching in meilisearch')
+        return {}
     return res
+
+def remove_index():
+    client = meilisearch.Client('http://localhost:7700')
+    client.index('subtitles').delete()

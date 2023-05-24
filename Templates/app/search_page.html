@@ -8,23 +8,32 @@
   </form>
 </div>
 <div>
+  <h1>Search Result: </h1>
+  <h4>Time Spent: {{ time_taken }}ms</h4>
+</div>
+<div id="table">
   <table>
     <thead>
       <tr>
-        <th>File Name</th>
+        <th>Sequence</th>
         <th>Time</th>
-        <th>Subtitle</th>
+        <th>Full Phrase</th>
       </tr>
     </thead>
     <tbody>
-      {% for file in data %}
+      {% for subs in data %}
       <tr>
-        <td>{{ file.file_name }}</td>
-        <td>{{ file.video_time }}</td>
-        <td>{{ file.subtitle_line }}</td>
+        <td>{{ subs.id }}</td>
+        <td>{{ subs.time }}</td>
+        <td>{{ subs.text }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
+  {% if info %}
+  <script>
+    document.querySelector('#table').innerHTML = "{{ info }}"
+  </script>
+  {% endif %}
 </div>
 {% endblock %} ```

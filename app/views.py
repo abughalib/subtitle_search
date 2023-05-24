@@ -43,8 +43,10 @@ def search_page(request: HttpRequest) -> HttpResponse:
         print(search_form.is_valid())
         if search_form.is_valid():
             table_data = search_text(search_form.cleaned_data['search_phrase'])
-            print(table_data)
-            return render(request, 'app/search_page.html', {'data': table_data, 'search_form': search_form})
+            if table_data:
+                return render(request, 'app/search_page.html', {'data': table_data["hits"], 'search_form': search_form, 'time_taken': table_data["processingTimeMs"]})
+            else:
+                return render(request, 'app/search_page.html', {'data': [], 'search_form': search_form, 'info': 'No results found'})
         return render(request, 'app/search_page.html', {'data': [], 'search_form': search_form})
     search_form = SearchPhraseForm()
 
