@@ -3,7 +3,8 @@
   <form action="" method="post"">
     {% csrf_token %}
     {{ search_form }}
-    <button type="submit">Search</button>
+    <button class="btn btn-success" type="submit">Search</button>
+    <a class="btn btn-secondary" href={% url 'upload' %} type="button">Try Another Video</a>
   </form>
 </div>
 <div>
