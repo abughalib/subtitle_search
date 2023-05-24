@@ -1,6 +1,6 @@
-{% extends '../../Templates/app/home.html' %} {% block content %}
+{% extends 'app/home.html' %} {% block content %}
 <div class="form">
-  <form action="" method="post"">
+  <form action="" method="post">
     {% csrf_token %}
     {{ search_form }}
     <button class="btn btn-success" type="submit">Search</button>
