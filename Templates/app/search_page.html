@@ -1,0 +1,39 @@
+{% extends 'app/home.html' %} {% block content %}
+<div class="form">
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ search_form }}
+    <button class="btn btn-success" type="submit">Search</button>
+    <a class="btn btn-secondary" href={% url 'upload' %} type="button">Try Another Video</a>
+  </form>
+</div>
+<div>
+  <h1>Search Result: </h1>
+  <h4>Time Spent: {{ time_taken }}ms</h4>
+</div>
+<div id="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Sequence</th>
+        <th>Time</th>
+        <th>Full Phrase</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for subs in data %}
+      <tr>
+        <td>{{ subs.id }}</td>
+        <td>{{ subs.time }}</td>
+        <td>{{ subs.text }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if info %}
+  <script>
+    document.querySelector('#table').innerHTML = "{{ info }}"
+  </script>
+  {% endif %}
+</div>
+{% endblock %} ```
