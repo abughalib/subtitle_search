@@ -86,8 +86,8 @@ def upload_video(file):
     subtitle_json = convert_to_json(subtitle_location, file_location)
     upload_subtitle(subtitle_json)
     # Upload file to S3
-    # amazons3.upload_file(file_location / (file_name + file_extension), AWS_BUCKET_NAME)
-    return subtitle_location
+    # amazons3.upload_file((file_name +'.'+ file_extension), file_location, AWS_BUCKET_NAME)
+    # return subtitle_location
 
 
 def upload_subtitle(subtitle_json_location: Path):
